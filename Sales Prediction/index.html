@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Prediction Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00c6ff;
+            --secondary-color: #0072ff;
+            --background-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --text-color: #f0f0f0;
+            --muted-text-color: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--muted-text-color);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #444;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        input[type="range"]:hover::-webkit-slider-thumb {
+            background: var(--secondary-color);
+        }
+
+        .slider-value {
+            font-weight: 700;
+            color: var(--primary-color);
+            min-width: 50px;
+        }
+
+        .prediction-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .prediction-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 10px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .prediction-circle:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .prediction-label {
+            font-size: 1.2em;
+            color: var(--muted-text-color);
+        }
+
+        .prediction-value {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .insights-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insights-list li {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .insights-list .icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-container">
+        <div class="card">
+            <h1>Sales Prediction</h1>
+            <div class="input-group">
+                <label for="tv">TV Advertising Budget</label>
+                <div class="slider-container">
+                    <input type="range" id="tv" name="tv" min="0" max="300" step="1" value="150">
+                    <span class="slider-value" id="tv-value">150</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="radio">Radio Advertising Budget</label>
+                <div class="slider-container">
+                    <input type="range" id="radio" name="radio" min="0" max="50" step="0.5" value="25">
+                    <span class="slider-value" id="radio-value">25.0</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="newspaper">Newspaper Advertising Budget</label>
+                <div class="slider-container">
+                    <input type="range" id="newspaper" name="newspaper" min="0" max="120" step="1" value="60">
+                    <span class="slider-value" id="newspaper-value">60</span>
+                </div>
+            </div>
+            <div class="prediction-container">
+                <div class="prediction-circle">
+                    <span class="prediction-label">Predicted Sales</span>
+                    <span class="prediction-value" id="prediction">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Actionable Insights</h2>
+            <ul class="insights-list">
+                <li>
+                    <span class="icon">📻</span>
+                    <div>
+                        <strong>Prioritize Radio:</strong> Radio advertising has the highest return on investment. For every $1,000 spent, you can expect an increase of about 189 sales units.
+                    </div>
+                </li>
+                <li>
+                    <span class="icon">📺</span>
+                    <div>
+                        <strong>Invest in TV:</strong> TV is also a strong driver of sales, bringing in about 45 sales units per $1,000 spent.
+                    </div>
+                </li>
+                <li>
+                    <span class="icon">📰</span>
+                    <div>
+                        <strong>Re-evaluate Newspaper:</strong> Newspaper advertising has a negligible impact on sales. Consider reallocating this budget to Radio or TV for better results.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const tvSlider = document.getElementById('tv');
+        const radioSlider = document.getElementById('radio');
+        const newspaperSlider = document.getElementById('newspaper');
+
+        const tvValue = document.getElementById('tv-value');
+        const radioValue = document.getElementById('radio-value');
+        const newspaperValue = document.getElementById('newspaper-value');
+
+        const predictionEl = document.getElementById('prediction');
+
+        const coeffs = {
+            tv: 0.04472952,
+            radio: 0.18919505,
+            newspaper: 0.00276111
+        };
+        const intercept = 2.979067338122629;
+
+        function predictSales() {
+            const tv = parseFloat(tvSlider.value);
+            const radio = parseFloat(radioSlider.value);
+            const newspaper = parseFloat(newspaperSlider.value);
+
+            const prediction = (tv * coeffs.tv) + (radio * coeffs.radio) + (newspaper * coeffs.newspaper) + intercept;
+            
+            predictionEl.innerText = prediction.toFixed(2);
+
+            tvValue.innerText = tv;
+            radioValue.innerText = radio.toFixed(1);
+            newspaperValue.innerText = newspaper;
+        }
+
+        tvSlider.addEventListener('input', predictSales);
+        radioSlider.addEventListener('input', predictSales);
+        newspaperSlider.addEventListener('input', predictSales);
+
+        // Initial prediction
+        predictSales();
+    </script>
+
+</body>
+</html>
