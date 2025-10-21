@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unemployment Rate Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4b2b;
+            --secondary-color: #ff416c;
+            --background-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --text-color: #f0f0f0;
+            --muted-text-color: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--muted-text-color);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #444;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            font-weight: 700;
+            color: var(--primary-color);
+            min-width: 50px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #444;
+            color: var(--text-color);
+            border: 1px solid #555;
+        }
+
+        .prediction-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .prediction-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unemployment Rate Prediction</h1>
+        <div class="grid-container">
+            <div class="input-group">
+                <label for="region">Region</label>
+                <select id="region" name="region">
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="month">Month</label>
+                <input type="range" id="month" name="month" min="1" max="12" step="1" value="6">
+                <span class="slider-value" id="month-value">6</span>
+            </div>
+            <div class="input-group">
+                <label for="year">Year</label>
+                <input type="range" id="year" name="year" min="2019" max="2021" step="1" value="2020">
+                <span class="slider-value" id="year-value">2020</span>
+            </div>
+            <div class="input-group">
+                <label for="estimated_employed">Estimated Employed</label>
+                <input type="range" id="estimated_employed" name="estimated_employed" min="100000" max="60000000" step="100000" value="10000000">
+                <span class="slider-value" id="estimated_employed-value">10M</span>
+            </div>
+            <div class="input-group">
+                <label for="labour_participation">Estimated Labour Participation Rate</label>
+                <input type="range" id="labour_participation" name="labour_participation" min="15" max="80" step="0.1" value="40">
+                <span class="slider-value" id="labour_participation-value">40.0</span>
+            </div>
+        </div>
+        <div class="prediction-container">
+            <h2>Predicted Unemployment Rate</h2>
+            <div class="prediction-value" id="prediction">0.00%</div>
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('input, select');
+        const predictionEl = document.getElementById('prediction');
+
+        async function predictUnemployment() {
+            const data = {
+                'Estimated Employed': parseFloat(document.getElementById('estimated_employed').value),
+                'Estimated Labour Participation Rate': parseFloat(document.getElementById('labour_participation').value),
+                'longitude': 0, // Placeholder, as these are not easily user-adjustable
+                'latitude': 0, // Placeholder
+                'Month': parseInt(document.getElementById('month').value),
+                'Year': parseInt(document.getElementById('year').value),
+                'Region': document.getElementById('region').value
+            };
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            predictionEl.innerText = `${result.toFixed(2)}%`;
+            
+            // Update slider values
+            document.getElementById('month-value').innerText = data.Month;
+            document.getElementById('year-value').innerText = data.Year;
+            document.getElementById('estimated_employed-value').innerText = `${(data['Estimated Employed'] / 1000000).toFixed(1)}M`;
+            document.getElementById('labour_participation-value').innerText = data['Estimated Labour Participation Rate'].toFixed(1);
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', predictUnemployment);
+        });
+
+        // Initial prediction
+        predictUnemployment();
+    </script>
+
+</body>
+</html>
